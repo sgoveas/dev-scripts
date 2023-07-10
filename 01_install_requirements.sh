@@ -94,9 +94,10 @@ sudo python -m pip install ansible=="${ANSIBLE_VERSION}"
 
 # Also need the 3.9 version of netaddr for ansible.netcommon
 # and lxml for the pyxpath script
+GOARCH=$(uname -m)
+[[ $GOARCH == "aarch64" ]] && sudo dnf -y install python39-devel libxml2-devel libxslt-devel
 sudo python -m pip install netaddr lxml
 
-GOARCH=$(uname -m)
 if [[ $GOARCH == "aarch64" ]]; then
     GOARCH="arm64"
 elif [[ $GOARCH == "x86_64" ]]; then
