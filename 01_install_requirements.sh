@@ -90,19 +90,19 @@ case $DISTRO in
     ;;
 esac
 
-sudo python -m pip install ansible=="${ANSIBLE_VERSION}"
-
-# Also need the 3.9 version of netaddr for ansible.netcommon
-# and lxml for the pyxpath script
 GOARCH=$(uname -m)
-[[ $GOARCH == "aarch64" ]] && sudo dnf -y install python39-devel libxml2-devel libxslt-devel
-sudo python -m pip install netaddr lxml
-
 if [[ $GOARCH == "aarch64" ]]; then
     GOARCH="arm64"
+    sudo dnf -y install python39-devel libxml2-devel libxslt-devel
 elif [[ $GOARCH == "x86_64" ]]; then
     GOARCH="amd64"
 fi
+
+# Also need the 3.9 version of netaddr for ansible.netcommon
+# and lxml for the pyxpath script
+sudo python -m pip install netaddr lxml
+
+sudo python -m pip install ansible=="${ANSIBLE_VERSION}"
 
 pushd ${METAL3_DEV_ENV_PATH}
 ansible-galaxy install -r vm-setup/requirements.yml
